@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+
+
+        <style>
+            .info-box {
+                height: 125px;
+                width: 300px;
+                background-color: white;
+                background-color: #ffffff;
+            }
+
+            .info-box .info-box-icon {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 3px;
+                display: block;
+                float: left;
+                height: 125px;
+                width: 125px;
+                text-align: center;
+                font-size: 60px;
+                line-height: 125px;
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            .info-box .info-box-content {
+                padding: 10px 15px;
+                margin-left: 125px;
+            }
+
+            .info-box .info-box-content .info-box-text {
+                display: block;
+                font-size: 26px;
+                font-weight: bold;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: uppercase;
+            }
+
+            .info-box .info-box-content .info-box-number {
+                display: block;
+                font-weight: normal;
+                font-size: 16px;
+            }
+
+
+            .main {
+                margin-top: 25px;
+            }
+
+
+            .layui-row {
+                line-height:70px;
+                font-size:18px;
+                text-align:center;
+
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+        <div class="layui-fluid main">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                    <div class="info-box layui-anim layui-anim-up">
+                        <span class="info-box-icon" style="background-color:#f1d397 !important;color:white;"><i class="fa fa-anchor" aria-hidden="true"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">发布中心</span>
+                            <span class="info-box-number">Release center</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        </div>
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">表单填写</a></legend>
+        </fieldset>
+
+        <form class="layui-form">
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" id = "projectName">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">赏金数量</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="cash" lay-verify="required|number" placeholder="您为项目提供的赏金" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">截止日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="deadline" id="date" lay-verify="date" placeholder="点击进行选择" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">标注数目</label>
+                    <div class="layui-input-inline">
+                        <select name="groups">
+                            <option value="">请选择数量</option>
+                            <option value="5">5组</option>
+                            <option value="10">10组</option>
+                            <option value="20">20组</option>
+                            <option value="50">50组</option>
+                            <option value="100">100组</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">标签</label>
+                <div class="layui-input-block">
+                    <div>
+                        <input name="label" title="生活纪实" type="radio" value="生活纪实" checked="">
+                        <input name="label" title="旅游民俗" type="radio" value="旅游民俗">
+                        <input name="label" title="历史文物" type="radio" value="历史文物">
+                        <input name="label" title="自然景观" type="radio" value="自然景观">
+                        <input name="label" title="人文建筑" type="radio" value="人文建筑">
+                        <input name="label" title="商贸财经" type="radio" value="商贸财经">
+                        <input name="label" title="IT与通讯" type="radio" value="IT与通讯">
+                        <input name="label" title="经济万象" type="radio" value="经济万象">
+                        <input name="label" title="文化娱乐" type="radio" value="文化娱乐">
+                        <input name="label" title="科技教育" type="radio" value="科技教育">
+                        <input name="label" title="体育运动" type="radio" value="体育运动">
+                        <input name="label" title="人物肖像" type="radio" value="人物肖像">
+                        <input name="label" title="动物植物" type="radio" value="动物植物">
+                        <input name="label" title="素材创意" type="radio" value="素材创意">
+                        <input name="label" title="其他标签" type="radio" value="其他标签">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input name="labelE" class="layui-input" placeholder="请输入标签" autocomplete="off">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">选择或填写你的图片标签</div>
+                </div>
+
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否加急</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="urgent" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <input type="text" name="remarks" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="submit" lay-filter="demo1">下一步</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+
+        </form>
+
+
+
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">表单填写</a></legend>
+        </fieldset>
+
+
+
+        <script src="../plugins/layui/layui.js"></script>
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+        <script>
+            layui.use(['form', 'layedit', 'laydate'], function () {
+                var form = layui.form,
+                        layer = layui.layer,
+                        layedit = layui.layedit,
+                        laydate = layui.laydate;
+
+                //日期
+                laydate.render({
+                    elem: '#date'
+                });
+
+                //监听指定开关
+                form.on('switch(switchTest)', function (data) {
+                    layer.msg('加急：' + (this.checked ? '已开启' : '已关闭'), {
+                        offset: '6px'
+                    });
+                    layer.tips('温馨提示：加急后，平台将会优先显示您的项目，但可能会支付额外的赏金', data.othis)
+                });
+
+                //监听提交
+                form.on('submit(demo1)', function (data) {
+
+                    var message = JSON.parse(JSON.stringify(data.field));
+                    message.userName = window.localStorage.userName;
+
+
+                    layer.confirm('最终的提交信息:' + JSON.stringify(data.field), {
+                        btn: ['确认', '返回重写'] //可以无限个按钮
+                        , yes: function () {
+                            $.post("/release", message, function (data) {
+                                if (data === "1") {
+                                    window.localStorage.recentReleaseProject = document.getElementById("projectName").value;
+                                    layer.alert("提交成功！");
+                                    window.location.href = './releaseb.html';
+                                } else if (data === "0") {
+                                    layer.alert("由于未知原因提交失败，请重试！");
+                                } else if (data === "Balance not enough!") {
+                                    layer.alert("钱好像不够了.....");
+                                } else if (data === "Sponsor level too low!") {
+                                    layer.alert("等级太低了....试试降低发布的赏金量吧。");
+                                } else {
+                                    layer.alert("由于未知原因提交失败，请重试！");
+                                }
+                            });
+
+                        }, btn2: function () {
+                            layer.alert("即将返回");
+
+                        }
+                    });
+
+                    return false;
+                });
+
+
+            });
+        </script>
+    </body>
+
+</html>

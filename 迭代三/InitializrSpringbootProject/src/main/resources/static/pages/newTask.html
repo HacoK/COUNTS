@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script>
+            window.Pages = 1;
+            var message = {};
+            message.userName = window.localStorage.userName;
+            $.post("/allTaskPage", message, function (data) {
+                Pages = data;
+            });
+
+        </script>
+        <style>        
+            .layui-row {
+                height:180px;
+                font-size:18px;
+                text-align:center;  
+                background: #f1f3de;
+            }
+        </style>
+    </head>
+
+    <body>
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>发现新任务</h1>
+        </blockquote>
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">总览</a></legend>
+        </fieldset>
+
+        <div class="layui-container" id="mainDiv">
+
+
+
+        </div> 
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../plugins/layui/layui.js"></script>
+
+
+
+
+        <script>
+            layui.use('flow', function () {
+                var flow = layui.flow;
+                flow.load({
+                    elem: '#mainDiv' //流加载容器
+                    , done: function (page, next) { //执行下一页的回调
+                        var JSPDATA;
+                        message.page = page;
+
+                        $.post("/allTask", message, function (data) {
+                            if (Pages !== 0) {
+                                JSPDATA = data;
+                                var len = JSPDATA.length;
+                                var lis = [];
+                                for (var i = 0; i < len; i++) {
+                                    lis.push('<div class="layui-row">\n\
+                                <div class="layui-col-xs5 layui-col-sm4 layui-col-md3">\n\
+                                    <br>\n\
+                                    <img src=' + JSPDATA[i].preloadPicURL + ' height="140" width="140">\n\
+                                </div>\n\
+                                <div class="layui-col-xs4 layui-col-sm4 layui-col-md6">\n\
+                                    <br>\n\
+                                    <p>赏金:' + JSPDATA[i].cash + '</p><br>\n\
+                                    <p>日期:' + JSPDATA[i].deadline + '</p><br>\n\
+                                    <p>项目名称:' + JSPDATA[i].name + '</p><br>\n\
+                                </div><div class="layui-col-xs3 layui-col-sm4 layui-col-md3"><br><br>\n\
+                                    <a class="layui-btn" href="javascript:void(0);" onclick="task_accept(\'' + JSPDATA[i].id + '\')"><i class="layui-icon">&#xe602;</i></a><br><br>\n\
+                                    <a class="layui-btn"><i class="layui-icon">&#xe641;</i></a><br><br></div></div><br><br>');
+                                }
+                            }
+                            next(lis.join(''), page < Pages);
+                            page++;
+
+                        });
+                    }
+                });
+            });
+        </script>
+
+
+        <script>
+            function task_accept(info) {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: false //不显示标题栏
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'confirm' //设定一个id，防止重复弹出
+                        , btn: ['确认信息', '放弃更改']
+                        , btnAlign: 'c'
+                        , moveType: 0 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">\n\
+                                    确定要接取该任务么？\n\
+                                    </div>'
+                        , yes: function () {
+                            var message = {};
+                            message.taskId = encodeURI(JSON.stringify(info), "utf-8");
+                            message.userName = window.localStorage.userName;
+
+
+                            $.post("/task_accept", message, function (data) {
+                                if (data == "Can't accept more!") {
+                                    layer.alert("今天达到任务上限了。去休息一下吧~");
+                                }
+                                else{
+                                    layer.alert("接收成功");
+                                }
+                            });
+                            layer.closeAll();
+                            location.reload();
+                        }
+                    });
+                });
+
+
+
+            }
+
+
+
+        </script> 
+    </body>
+
+</html>
+
+

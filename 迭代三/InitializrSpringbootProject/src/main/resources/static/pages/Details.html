@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        
+    </head>
+
+    <body>
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>任务详情</h1>
+        </blockquote>
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">总览</a></legend>
+        </fieldset>
+
+
+
+
+        <div class="layui-container" id="mainDiv" style = "background-color: #F2F2F2;">
+
+
+            <div class="layui-col-md3" id="leftDiv" style = "padding: 10px; background-color: #F2F2F2;">
+
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>基本信息</legend>
+                </fieldset>
+
+
+                <div class="layui-card" align=center>
+                    <div class="layui-card-header" id="task_card1">"嘤嘤"</div>
+                    <p id="task_card2">
+                        赏金：500<br>
+                        发布人：嘤嘤怪<br>
+                        截止日期：2018-6-30<br>
+                        备注：  <br>
+                    </p>
+                </div>
+
+                <div class="layui-carousel" id="test1">
+                    <div carousel-item id="window">
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="layui-col-md1">
+                <br>
+            </div>
+
+
+            <div class="layui-col-md8" id="rigthDiv" style = "padding: 10px; background-color: #F2F2F2;">
+
+                <div class="layui-progress layui-progress-big" lay-filter="demo">
+                    <div class="layui-progress-bar layui-bg-red" lay-percent="0%" onload="progress()"></div>
+                </div>
+                <div class="layui-row" style = "text-align:center">
+                    <a href="javascript:info1()" class="layui-btn">全局信息</a>
+                    <a href="javascript:newInfo()" class="layui-btn">添加区域</a>
+                    <a href="javascript:readInfo()" class="layui-btn">查看已有的标注信息</a>
+                    <a href="javascript:delInfo()" class="layui-btn">清空信息</a>
+                    <a href="javascript:Push()" class="layui-btn">提交本页</a>
+                </div>
+                <br>
+                <div style = "text-align:center">
+                    <canvas id="myCanvas" width="600" height="450" 
+                            style="float:none ;width:600px;height:450px;border:1px solid #c3c3c3" 
+                            ></canvas>
+                    <div id="mainInfo"></div>
+                    <div id="areaInfo"></div>
+                </div>
+                <br>
+                <div class="layui-row" style = "text-align:center">
+                    <a href="javascript:lastPage()" class="layui-btn">上一张</a>
+                    <a id="picNum">页码：2/10</a>
+                    <a href="javascript:nextPage()" class="layui-btn">下一张</a>
+                </div>
+
+
+            </div>
+        </div> 
+
+
+
+
+
+
+
+
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../plugins/layui/layui.all.js"></script>
+
+        <script>
+            var message = {};
+            var JSPDATA;
+            var currentPicPage = 1;
+            message.taskID = window.localStorage.taskToOpen;
+            $.post("/taskInfo", message, function (data) {
+                JSPDATA = data;
+                $('#task_card1').html(data.name);
+                $('#task_card2').html(
+                        "赏金： " + data.cash + "<br>\n\
+                        发布人：" + data.sponsor + "<br>\n\
+                        截止日期：" + data.deadline + "<br>\n\
+                        备注：" + data.note + "<br>"
+                        );
+                var len = data.preloadPicURLs.length;
+                for (var i = 0; i < len; i++) {
+                    $('#window').append('<img src="' + data.preloadPicURLs[i] + '">');
+                }
+                layui.use('carousel', function () {
+                    var carousel = layui.carousel;
+                    //建造实例
+                    carousel.render({
+                        elem: '#test1'
+                        , width: '100%' //设置容器宽度
+                        , arrow: 'always' //始终显示箭头
+                                //,anim: 'updown' //切换动画方式
+                    });
+                });
+                nowImg.src = data.preloadPicURLs[0];
+                nowImg.onload = drawImg;//图片加载完成再执行  
+                function drawImg() {
+                    cxt.drawImage(nowImg, 0, 0, 600, 450);
+                }
+                $('#picNum').html("页码： " + currentPicPage + '/' + JSPDATA.imageNums);
+                progress();
+            });
+        </script>
+        <script>
+            var nowImg = new Image();
+            function lastPage() {
+                var mes = message;
+                mes.index = currentPicPage - 1;
+                if (currentPicPage == 1) {
+                    layui.use('layer', function () {
+                        layer.alert("已经是第一张了......");
+                    });
+                } else {
+                    $.post("/imagePath", mes, function (data) {
+                        nowImg.src = data;
+                        nowImg.onload = drawImg;//图片加载完成再执行  
+                        function drawImg() {
+                            cxt.drawImage(nowImg, 0, 0, 600, 450);
+                        }
+                        $('#mainInfo').html("");
+                        currentPicPage -= 1;
+                        $('#picNum').html("页码： " + currentPicPage + '/' + JSPDATA.imageNums);
+                    });
+                }
+            }
+
+            function nextPage() {
+                var mes = message;
+                mes.index = currentPicPage + 1;
+                if (currentPicPage == JSPDATA.imageNums) {
+                    layui.use('layer', function () {
+                        layer.alert("已经是最后一张了......");
+                    });
+                } else {
+                    $.post("/imagePath", mes, function (data) {
+                        nowImg.src = data;
+                        nowImg.onload = drawImg;//图片加载完成再执行  
+                        function drawImg() {
+                            cxt.drawImage(nowImg, 0, 0, 600, 450);
+                        }
+                        $('#mainInfo').html("");
+                        currentPicPage += 1;
+                        $('#picNum').html("页码： " + currentPicPage + '/' + JSPDATA.imageNums);
+                    });
+                }
+            }
+
+
+            layui.use('element', function () {
+                var $ = layui.jquery
+                        , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+                element.progress('progress', '50%');
+            });
+
+
+        </script>
+        <script type="text/javascript">
+            var state = "up";
+            var cxt = document.getElementById("myCanvas").getContext("2d");
+            cxt.strokeStyle = "#0000ff";
+            var DOTNUM = 0;
+            var STEP = 2;
+
+            var rdpre = {x: 0, y: 0};
+            function XYCo(e, objID) {
+                var htmlObj = document.getElementById(objID);
+                var x = e.clientX;
+                var y = e.clientY;
+                var rd = {x: 0, y: 0};
+                do {
+                    rd.x += htmlObj.offsetLeft;
+                    rd.y += htmlObj.offsetTop;
+                    htmlObj = htmlObj.offsetParent;
+                } while (htmlObj)
+                rd.x = x - rd.x;
+                rd.y = y - rd.y;
+                return rd;
+            }
+
+            function mouseIn(e, objID) {
+                var htmlObj = document.getElementById(objID);
+                if (innerClear == 0) {
+                    var innerCxt = htmlObj.getContext("2d");
+                    innerCxt.drawImage(nowImg, 0, 0, htmlObj.width, htmlObj.height);
+                    innerClear = 1;
+                }
+
+                var rd = XYCo(e, objID);
+                if (state == "down") {
+                    htmlObj.getContext("2d").lineTo(rd.x, rd.y);
+                    htmlObj.getContext("2d").stroke();
+                    if (DOTNUM == STEP) {
+                        DOTNUM = 0;
+                        markPath.push(rd);
+                    } else {
+                        DOTNUM += 1;
+                    }
+                }
+            }
+
+            function mousedown(e, objID) {
+                var rd = XYCo(e, objID);
+                if (innerPerform == 0) {
+                    state = "down";
+                    markPath = [];
+                    markPath.push(rd);
+                    document.getElementById(objID).getContext("2d").beginPath();
+                    document.getElementById(objID).getContext("2d").moveTo(rd.x, rd.y);
+                    repre = rd;
+                }
+            }
+
+            function mouseup(objID) {
+                if (innerPerform == 0) {
+                    state = "up";
+                    document.getElementById(objID).getContext("2d").closePath();
+                    document.getElementById(objID).getContext("2d").stroke();
+                    innerPerform = 1;
+                }
+            }
+
+        </script>
+        <script type="text/javascript">
+            var innerClear = 0;//内层图片是否加载完成的开关变量
+            var innerPerform = 0;//内层标注是否完成的开关变量
+            var markPath = [];//用于临时存储XY坐标
+            function info1() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: false //不显示标题栏
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , btn: ['确认提交', '放弃更改']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">输入对这张图片的整体描述：<input class="layui-input" type="text" autocomplete="off" id = "INFO1"></div>'
+                        , yes: function () {
+                            var message = {};
+                            message.mainInfo = $('#INFO1').val();
+                            message.imageID = currentPicPage;
+                            message.userName = localStorage.userName;
+                            message.taskID = window.localStorage.taskToOpen;
+                            $.post("/mainInfo", message, function () {
+                                layer.closeAll();
+                                layer.alert("提交成功");
+
+                            });
+
+                        }
+                    });
+                });
+            }
+
+            function newInfo() {
+                innerClear = 0;
+                innerPerform = 0;
+                markPath = [];
+                cxt.strokeStyle = "#0000ff";
+                var width = nowImg.width;
+                var height = nowImg.height;
+                if (width > height) {
+                    width = 600;
+                    height = 450;
+                } else {
+                    width = 400;
+                    height = 500;
+                }
+
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: "区域标注信息"
+                        , closeBtn: false
+                        , area: '640px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , btn: ['确认信息', '放弃更改']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300; text-align:center">\n\
+                                        <canvas id="innerCanvas" width="' + width + '" height="' + height + '" \n\
+                                                style="float:none ;width:' + width + 'px;height:' + height + 'px;border:1px solid #c3c3c3" \n\
+                                                onmousedown = "mousedown(event, \'innerCanvas\')"\n\
+                                                onmouseup ="mouseup(\'innerCanvas\')"\n\
+                                                onmousemove="mouseIn(event, \'innerCanvas\')" \n\
+                                        ></canvas>\n\
+                                    <input class="layui-input" type="text" autocomplete="off" id = "INFO2">\n\
+                                    </div>'
+
+                        , yes: function () {
+                            var message = {};
+                            message.Info = $('#INFO2').val();
+                            message.imageID = currentPicPage;
+                            message.userName = localStorage.userName;
+                            message.taskID = window.localStorage.taskToOpen;
+                            var str = "";
+                            for (var i = 0; i < markPath.length; i++) {
+                                str = str + markPath[i].x + "," + markPath[i].y + ",";
+                            }
+                            console.log(str);
+                            message.string = str;
+                            $.post("/areaInfo", message, function () {
+                                layer.closeAll();
+                                layer.alert("提交成功");
+                                //$('#areaInfo').append('局部标注： '+message.Info+"<br>");
+                            });
+                        }
+                    });
+
+                });
+            }
+
+
+            function delInfo() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: false //不显示标题栏
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , btn: ['确认删除', '再想想看']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确认要删除所有的标记信息么？</div>'
+                        , yes: function () {
+                            var message = {};
+                            message.imageID = currentPicPage;
+                            message.userName = localStorage.userName;
+                            message.taskID = window.localStorage.taskToOpen;
+                            $.post("/delInfo", message, function () {
+                                layer.closeAll();
+                                layer.alert("删除成功");
+                            });
+
+                        }
+                    });
+                });
+            }
+
+            function drawPath(tag, input) {
+                cxt.font = "20px Courier New";
+                var tx = 0;
+                var ty = 0;
+                var temp = Math.floor(Math.random() * 10);
+                switch (temp)
+                {
+                    case 0:
+                        cxt.strokeStyle = "#ad4d32";
+                        cxt.fillStyle = "#ad4d32";
+                        break;
+                    case 1:
+                        cxt.strokeStyle = "#f1e3a7";
+                        cxt.fillStyle = "#f1e3a7";
+                        break;
+                    case 2:
+                        cxt.strokeStyle = "#c67c8d";
+                        cxt.fillStyle = "#c67c8d";
+                        break;
+                    case 3:
+                        cxt.strokeStyle = "#0a6faf";
+                        cxt.fillStyle = "#0a6faf";
+                        break;
+                    case 4:
+                        cxt.strokeStyle = "#68a2a9";
+                        cxt.fillStyle = "#68a2a9";
+                        break;
+                    case 5:
+                        cxt.strokeStyle = "#6aaa5e";
+                        cxt.fillStyle = "#6aaa5e";
+                        break;
+                    case 6:
+                        cxt.strokeStyle = "#f26378";
+                        cxt.fillStyle = "#f26378";
+                        break;
+                    case 7:
+                        cxt.strokeStyle = "#a2ef54";
+                        cxt.fillStyle = "#a2ef54";
+                        break;
+                    case 8:
+                        cxt.strokeStyle = "#0000ff";
+                        cxt.fillStyle = "#0000ff";
+                        break;
+                    case 9:
+                        cxt.strokeStyle = "#f26d26";
+                        cxt.fillStyle = "#f26d26";
+                        break;
+                }
+
+                var data = input.split(",");
+                var info = tag;
+
+                if (nowImg.width > nowImg.height) {
+                    tx = 600;
+                    ty = 450;
+                } else {
+                    tx = 400;
+                    ty = 500;
+                }
+
+                cxt.beginPath();
+                cxt.moveTo(parseInt(data[0]) * 600 / tx, parseInt(data[1]) * 450 / ty);
+                for (var i = 2; i < data.length; i += 2) {
+                    cxt.lineTo(parseInt(data[i] * 600 / tx), parseInt(data[i + 1]) * 450 / ty);
+                    cxt.stroke();
+                }
+                cxt.closePath();
+                cxt.stroke();
+
+                cxt.fillText(info, parseInt(data[0] * 600 / tx), parseInt(data[1]) * 450 / ty);
+            }
+
+
+            function readInfo() {
+                cxt.drawImage(nowImg, 0, 0, 600, 450);
+                var message = {};
+                message.imageID = currentPicPage;
+                message.userName = localStorage.userName;
+                message.taskID = window.localStorage.taskToOpen;
+                $.post("/readInfo", message, function (data) {
+                    $('#mainInfo').html('图片信息： ' + data.grobalTag);
+                    var PATHS = data.lines;
+                    for (var i = 0; i < PATHS.length; i++) {
+                        drawPath(data.areaTags[i], PATHS[i]);
+                    }
+                });
+            }
+
+            function Push() {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: false //不显示标题栏
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , btn: ['确认提交', '再想想看']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">提交的作用是，确认你已经完成了这张图片的标注。<br>当你提交了所有图片时，就可以完成这个任务了！<br>当然，提交后你依然可以作出更改，直到满意为止。</div>'
+                        , yes: function () {
+                            var message = {};
+                            message.imageID = currentPicPage;
+                            message.userName = localStorage.userName;
+                            message.taskID = window.localStorage.taskToOpen;
+                            $.post("/Push", message, function (data) {
+                                layer.closeAll();
+                                if (data == '0')
+                                    layer.alert("网络不太好。。。。");
+                                if (data == '1')
+                                    layer.alert("提交成功！");
+                                if (data == '2')
+                                    layer.alert("还有信息没有补全噢");
+                                if (data == '3')
+                                    layer.alert("提交成功！你已经完成了任务！");
+                                progress();
+                            });
+
+                        }
+                    });
+                });
+                
+            }
+        </script>
+
+
+        <script>
+            function progress() {
+                var $ = layui.jquery;
+                var message = {};
+                message.userName = localStorage.userName;
+                message.taskID = window.localStorage.taskToOpen;
+                $.post("/taskProgress",message , function (num) {
+                    layui.use('element', function () {
+                        var $ = layui.jquery, element = layui.element;
+                        element.progress('demo', '' + num + '%')
+                    });
+                });
+            }
+        </script>
+
+    </body>
+
+</html>

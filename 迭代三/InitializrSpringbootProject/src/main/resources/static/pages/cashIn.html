@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <style>        
+            .layui-row {
+                height:180px;
+                font-size:18px;
+                text-align:center;  
+                background: #f1f3de;
+            }
+        </style>
+    </head>
+
+    <body>
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>充值中心</h1>
+        </blockquote>
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">支付</a></legend>
+        </fieldset>
+
+        <div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">本项目为作业使用，不启用商业功能，数据仅用测试
+            <input placeholder="请输入充值金额" autocomplete="off" class="layui-input" id = "cashNum"><br>
+            <a class="layui-btn" onclick="cashIn()">1
+                确认
+            </a>
+        </div>
+        <script src="../plugins/layui/layui.all.js"></script>
+
+        <script>
+            function cashIn(){
+                var $ = layui.jquery;
+                var message = {};
+                message.userName = window.localStorage.userName;
+                var cash = $(cashNum).val();console.log(cash);
+                message.cash = parseInt(cash);
+                $.post("/cashIn",message,function(){
+                    layui.use('layer', function () {
+                        layer.alert("充值成功啦！");
+                    })
+                })
+            }
+        </script>
+
+    </body>
+
+</html>

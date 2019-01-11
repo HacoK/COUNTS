@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Discovery</title>
+        <link rel="stylesheet" href="./plugins/layui/css/layui.css" media="all">
+        <link rel="stylesheet" href="./build/css/app.css" media="all">
+    </head>
+
+    <body>
+        <div class="layui-layout layui-layout-admin kit-layout-admin">
+            <div class="layui-header">
+                <div class="layui-logo"><strong><i class="layui-icon">&#xe857;</i>Discovery</strong></div>
+                <div class="layui-logo kit-logo-mobile"><strong>D</strong></div>
+
+                <ul class="layui-nav layui-layout-right kit-nav">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" id="nickName">VAN</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" >
+                            <img src="http://m.zhengjinfan.cn/images/0.jpg" onclick="dailyMark()" class="layui-nav-img" id="loginID"> 
+                        </a>
+                    </li>
+                    <li class="layui-nav-item"><a onclick ="exit()"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+                </ul>
+            </div>
+
+            <div class="layui-side layui-bg-black kit-side">
+                <div class="layui-side-scroll">
+                    <div class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="true"></i></div>
+                    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                    <ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar>
+                        <li class="layui-nav-item layui-nav-itemed">
+                            <a href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span>站点统计</span></a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="javascript:;" kit-target data-options="{url:'pages/chart1.html',icon:'&#xe705;',title:'直观统计量',id:'11'}">
+                                        <i class="layui-icon" style="font-size:20px;">&#xe705;</i><span> 直观统计量</span></a></dd>
+                                <dd><a href="javascript:;" data-url="pages/chart2.html" data-icon="&#xe612" data-title="百分统计量与排名" kit-target data-id='12'>
+                                        <i class="layui-icon" style="font-size:20px;">&#xe612;</i><span> 百分统计量与排名</span></a></dd>
+                                <dd><a href="javascript:;" data-url="pages/chart3.html" data-icon="&#xe623;" data-title="散点图与聚类统计" kit-target data-id='13'>
+                                        <i class="layui-icon" style="font-size:20px;">&#xe623;</i><span> 散点图与聚类统计</span></a></dd>
+                                <dd><a href="javascript:;" data-url="pages/chartE.html" data-icon="&#xe623;" data-title="样板" kit-target data-id='13'>
+                                        <i class="layui-icon" style="font-size:20px;">&#xe623;</i><span> 样板</span></a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layui-body" id="container">
+                <!-- 内容主体区域 -->
+                <div style="padding: 15px;">主体内容加载中,请稍等...</div>
+            </div>
+
+            <div class="layui-footer">
+                <!-- 底部固定区域 -->
+                2018 Discovery  众包标注平台 <i class="layui-icon">&#xe658;</i>
+                <a href="./index.html"> All Rights Reserved .</a> 
+
+            </div>
+        </div>
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="./plugins/layui/layui.js"></script>
+        <script>
+                        var message;
+                        layui.config({
+                            base: 'build/js/'
+                        }).use(['app', 'message'], function () {
+                            var app = layui.app,
+                                    $ = layui.jquery,
+                                    layer = layui.layer;
+                            //将message设置为全局以便子页面调用
+                            message = layui.message;
+                            //主入口
+                            app.set({
+                                type: 'iframe'
+                            }).init();
+                            $('#pay').on('click', function () {
+                                layer.open({
+                                    title: false,
+                                    type: 1,
+                                    content: '<img src="/build/images/pay.png" />',
+                                    area: ['500px', '250px'],
+                                    shadeClose: true
+                                });
+                            });
+
+                        });
+
+
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                window.console.log(window.localStorage.userName);
+                $("#nickName").text(window.localStorage.userName);
+            });
+        </script>
+
+
+        <script>
+                   function exit()
+                                                       {
+                                                            window.location.href = "/login";//这里写你想跳转的url，或者也可以给test加一个参数，从a标签的点击方法里写上想要跳转的url
+                                                      }
+                                         </script>
+
+    </body>
+
+</html>

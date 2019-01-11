@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <style>
+            .layui-row {
+                height:60px;
+                font-size:18px;
+                text-align:center; 
+                vertical-align:middle;
+            }
+        </style>
+    </head>
+
+    <body>
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>任务完成状态</h1>
+        </blockquote>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">总览</a></legend>
+        </fieldset>
+        <div class="layui-container" style = "background-color: #ffffff; text-align: center;">
+            <div class="layui-progress layui-progress-big" lay-filter="demo">
+                <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+            </div><br>
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md4" id="cash">
+                    赏金：500
+                </div>
+                <div class="layui-col-md4" id="date">
+                    截止日期：？？？
+                </div>
+                <div class="layui-col-md4" id="nums">
+                    任务组数：？？？
+                </div>
+            </div>
+        </div> 
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">参与者详情</a></legend>
+        </fieldset>
+        <div class="layui-container" id="mainDiv">
+            <div class="layui-row layui-col-space15" style = "background-color: #abd9de; text-align: center;">
+                <a>用户13678</a> <a>当前完成进度：100%</a><a class="layui-btn layui-btn-sm" onclick="read()">查看具体标注</a><a class="layui-btn layui-btn-sm">追加奖励</a><a class="layui-btn layui-btn-sm">反馈任务的满意度</a>
+            </div>
+            <div class="layui-row layui-col-space15" style = "background-color: #f1e3a7; text-align: center;">
+                <a>用户13678</a> <a>当前完成进度：100%</a><a class="layui-btn layui-btn-sm">查看具体标注</a><a class="layui-btn layui-btn-sm">追加奖励</a><a class="layui-btn layui-btn-sm">反馈任务的满意度</a>
+            </div>
+           
+
+        </div> 
+
+
+
+
+
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../plugins/layui/layui.all.js"></script>
+
+        <script>
+            function progress() {
+                var $ = layui.jquery;
+                var message = {};
+                message.userName = localStorage.userName;
+                message.taskID = window.localStorage.taskToOpen;
+                $.post("/taskProgress_release", message, function (num) {
+                    layui.use('element', function () {
+                        var $ = layui.jquery, element = layui.element;
+                        element.progress('demo', '' + num + '%')
+                    });
+                });
+            }
+        </script>
+
+        <script>
+            var $ = layui.jquery;
+            var message = {};
+            message.userName = localStorage.userName;
+            message.taskID = window.localStorage.taskToOpen;
+
+            var imageNums;
+
+            $.post("/taskInfo", message, function (data) {
+                imageNums = data.imageNums;
+            });
+
+
+            $.post("/taskInfo_release", message, function (data) {
+                $("#mainDiv").html("");
+                $("#cash").html("赏金：" + data.cash);
+                $("#date").html("截止日期：" + data.date);
+                $("#nums").html("任务组数：" + data.nums);
+                progress();
+                for (var i = 0; i < data.actors.length; i++) {
+                    if (i % 2 === 0) {
+                        $("#mainDiv").append('<div class="layui-row layui-col-space15" style = "background-color: #abd9de; text-align: center;">\n\
+                                                <a>' + data.actors[i].id + '</a> <a>当前完成进度：' + data.actors[i].process + '%</a>\n\
+                                                <a class="layui-btn layui-btn-sm" onclick="read(\'' + data.actors[i].id + '\')">查看具体标注</a>\n\
+                                                <a class="layui-btn layui-btn-sm" onclick="extraBouns(\'' + data.actors[i].id + '\')">追加奖励</a>\n\
+                                                <a class="layui-btn layui-btn-sm" onclick="comment(\'' + data.actors[i].id + '\')">反馈任务的满意度</a>\n\
+                                              </div>');
+                    } else {
+                        $("#mainDiv").append('<div class="layui-row layui-col-space15" style = "background-color: #f1e3a7; text-align: center;">\n\
+                                                <a>' + data.actors[i].id + '</a> <a>当前完成进度：' + data.actors[i].process + '%</a>\n\
+                                                <a class="layui-btn layui-btn-sm" onclick="read(\'' + data.actors[i].id + '\')">查看具体标注</a>\n\
+                                                <a class="layui-btn layui-btn-sm" onclick="extraBouns(\'' + data.actors[i].id + '\')">追加奖励</a>\n\
+                                                <a class="layui-btn layui-btn-sm" onclick="comment(\'' + data.actors[i].id + '\')">反馈任务的满意度</a>\n\
+                                              </div>');
+                    }
+                }
+                ;
+            });
+        </script>
+
+        <script>
+            var workerNow = "";
+            var currentPicPage = 1;
+            var innerFine = 0;
+            var workerName = "";
+            var nowImg = new Image();
+
+            function read(input) {
+                workerName = input;
+                currentPicPage = 1;
+                innerFine = 0;
+                workerNow = input;
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: "区域标注信息"
+                        , closeBtn: true
+                        , area: '640px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        , moveType: 1
+                        , content: '<div style = "text-align:center">\n\
+                                        <canvas id="myCanvas" width="600" height="450" \n\
+                                                style="float:none ;width:600px;height:450px;border:1px solid #c3c3c3" \n\
+                                                onmousemove="move()"></canvas><div id="mainInfo"></div>\n\
+                                    </div><br>\n\<div class="layui-row" style = "text-align:center">\n\
+                                        <a href="javascript:lastPage()" class="layui-btn">上一张</a>\n\
+                                        <a id="picNum">页码：1</a>\n\
+                                        <a href="javascript:nextPage()" class="layui-btn">下一张</a>\n\
+                                    </div>'
+                    });
+
+                });
+            }
+
+            function move() {
+                if (innerFine == 0) {
+                    var cxt = document.getElementById("myCanvas").getContext("2d");
+
+                    var mes = {};
+                    mes.index = currentPicPage;
+                    mes.taskID = window.localStorage.taskToOpen;
+                    $.post("/imagePathR", mes, function (data) {
+                        innerFine = 1;
+                        nowImg.src = data;
+                        nowImg.onload = drawImg;//图片加载完成再执行  
+                        function drawImg() {
+                            cxt.drawImage(nowImg, 0, 0, 600, 450);
+                        }
+                        readInfo();
+                        
+                    });                    
+                }
+            }
+
+
+            function readInfo() {
+                //var cxt = document.getElementById("myCanvas").getContext("2d");
+                //cxt.drawImage(nowImg, 0, 0, 600, 450);
+                var message = {};
+                message.imageID = currentPicPage;
+                message.userName = workerName;
+                message.taskID = window.localStorage.taskToOpen;
+                $.post("/readInfoR", message, function (data) {
+                    $('#mainInfo').html('图片信息： ' + data.grobalTag);
+                    $('#picNum').html("页码： " + currentPicPage + '/' + imageNums);
+                    var PATHS = data.lines;
+                    for (var i = 0; i < PATHS.length; i++) {
+                        drawPath(data.areaTags[i], PATHS[i]);
+                    }
+                });
+            }
+            function drawPath(tag, input) {
+                var cxt = document.getElementById("myCanvas").getContext("2d");
+                cxt.font = "20px Courier New";
+                var tx = 0;
+                var ty = 0;
+                var temp = Math.floor(Math.random() * 10);
+                switch (temp)
+                {
+                    case 0:
+                        cxt.strokeStyle = "#ad4d32";
+                        cxt.fillStyle = "#ad4d32";
+                        break;
+                    case 1:
+                        cxt.strokeStyle = "#f1e3a7";
+                        cxt.fillStyle = "#f1e3a7";
+                        break;
+                    case 2:
+                        cxt.strokeStyle = "#c67c8d";
+                        cxt.fillStyle = "#c67c8d";
+                        break;
+                    case 3:
+                        cxt.strokeStyle = "#0a6faf";
+                        cxt.fillStyle = "#0a6faf";
+                        break;
+                    case 4:
+                        cxt.strokeStyle = "#68a2a9";
+                        cxt.fillStyle = "#68a2a9";
+                        break;
+                    case 5:
+                        cxt.strokeStyle = "#6aaa5e";
+                        cxt.fillStyle = "#6aaa5e";
+                        break;
+                    case 6:
+                        cxt.strokeStyle = "#f26378";
+                        cxt.fillStyle = "#f26378";
+                        break;
+                    case 7:
+                        cxt.strokeStyle = "#a2ef54";
+                        cxt.fillStyle = "#a2ef54";
+                        break;
+                    case 8:
+                        cxt.strokeStyle = "#0000ff";
+                        cxt.fillStyle = "#0000ff";
+                        break;
+                    case 9:
+                        cxt.strokeStyle = "#f26d26";
+                        cxt.fillStyle = "#f26d26";
+                        break;
+                }
+
+                var data = input.split(",");
+                var info = tag;
+
+                if (nowImg.width > nowImg.height) {
+                    tx = 600;
+                    ty = 450;
+                } else {
+                    tx = 400;
+                    ty = 500;
+                }
+
+                cxt.beginPath();
+                cxt.moveTo(parseInt(data[0]) * 600 / tx, parseInt(data[1]) * 450 / ty);
+                for (var i = 2; i < data.length; i += 2) {
+                    cxt.lineTo(parseInt(data[i] * 600 / tx), parseInt(data[i + 1]) * 450 / ty);
+                    cxt.stroke();
+                }
+                cxt.closePath();
+                cxt.stroke();
+
+                cxt.fillText(info, parseInt(data[0] * 600 / tx), parseInt(data[1]) * 450 / ty);
+            }
+            
+            
+            
+            function lastPage() {
+                var message = {};
+                message.taskID = window.localStorage.taskToOpen;
+                var cxt = document.getElementById("myCanvas").getContext("2d");
+                message.index = currentPicPage - 1;
+                if (currentPicPage == 1) {
+                } else {
+                    $.post("/imagePathR", message, function (data) {
+                        nowImg.src = data;
+                        nowImg.onload = drawImg;//图片加载完成再执行  
+                        function drawImg() {
+                            cxt.drawImage(nowImg, 0, 0, 600, 450);
+                        }
+                        $('#mainInfo').html("");
+                        currentPicPage -= 1;
+                        $('#picNum').html("页码： " + currentPicPage + '/' + imageNums);
+                        readInfo();
+                    });
+                }
+            }
+
+            function nextPage() {
+                var message = {};
+                message.taskID = window.localStorage.taskToOpen;
+                var cxt = document.getElementById("myCanvas").getContext("2d");
+                message.index = currentPicPage + 1;
+                if (currentPicPage == imageNums) {
+                } else {
+                    $.post("/imagePathR", message, function (data) {
+                        nowImg.src = data;
+                        nowImg.onload = drawImg;//图片加载完成再执行  
+                        function drawImg() {
+                            cxt.drawImage(nowImg, 0, 0, 600, 450);
+                        }
+                        $('#mainInfo').html("");
+                        currentPicPage += 1;
+                        $('#picNum').html("页码： " + currentPicPage + '/' +imageNums);
+                        readInfo();
+                    });
+                }
+            }
+
+
+        </script>
+
+        <script>
+            function extraBouns(input) {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: false
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro'
+                        , btn: ['确认', '取消']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">要为' + input + '追加奖励多少？<input class="layui-input" type="text" autocomplete="off" id = "INFO1"></div>'
+                        , yes: function () {
+                            var message = {};
+                            message.Bonus = $('#INFO1').val();
+                            message.workerId = input;
+                            message.taskID = window.localStorage.taskToOpen;
+                            $.post("/extraBonus", message, function (data) {
+                                if(data == "Task Unfinished..."){
+                                    layer.closeAll();
+                                    layer.alert("任务还没有完成噢.......");
+                                }else if(data == "Have Given BP Before..."){
+                                    layer.closeAll();
+                                    layer.alert("已经给过奖励了！");
+                                }else if(data == "Unvalid BP value..."){
+                                    layer.closeAll();
+                                    layer.alert("奖励只能是1-10积分之间噢！");
+                                }else{
+                                    layer.closeAll();
+                                    layer.alert("提交成功");
+                                }
+                            });
+
+                        }
+                    });
+                });
+            }
+
+            function comment(input) {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var $ = layui.jquery;
+                    layer.open({
+                        type: 1
+                        , title: false
+                        , closeBtn: false
+                        , area: '300px;'
+                        , shade: 0.8
+                        , id: 'LAY_layuipro'
+                        , btn: ['确认', '取消']
+                        , btnAlign: 'c'
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">要为' + input + '评级为几分？(1-5)<input class="layui-input" type="text" autocomplete="off" id = "INFO1"></div>'
+                        , yes: function () {
+                            var message = {};
+                            message.rank = $('#INFO1').val();
+                            message.workerId = input;
+                            message.taskID = window.localStorage.taskToOpen;
+                            $.post("/rank", message, function (data) {
+                                if(data == "Task Unfinished..."){
+                                    layer.closeAll();
+                                    layer.alert("任务还没有完成噢.......");
+                                }else if(data == "Have Given Satisfaction Before..."){
+                                    layer.closeAll();
+                                    layer.alert("已经有评分了！");
+                                }else if(data == "Unvalid Satisfaction value..."){
+                                    layer.closeAll();
+                                    layer.alert("奖励只能是1-10积分之间噢！");
+                                }else{
+                                    layer.closeAll();
+                                    layer.alert("提交成功");
+                                }
+                            });
+
+                        }
+                    });
+                });
+            }
+        </script>
+    </body>
+
+</html>

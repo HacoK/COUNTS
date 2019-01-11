@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <script src="../plugins/echarts.min.js"></script>
+    </head>
+
+    <body style="font-size: 20px">
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>散点图与聚类统计</h1>
+        </blockquote>
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">概览</a></legend>
+        </fieldset>
+
+        <div class="layui-container" id="mainDiv">
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">用户分类统计</a></legend>
+            </fieldset>
+            <div id="main1" style="width: 600px;height:400px;"></div>
+            <p>该统计图表旨在以散点方式反映任务的受欢迎程度与任务项目的标签的关系</p>
+            <br><br>
+
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">任务散点分析(与任务图片数）</a></legend>
+            </fieldset>
+            <div id="main2" style="width: 600px;height:400px;"></div>
+            <p>该统计图表旨在以散点方式反映任务的受欢迎程度与任务项目的图片数的关系</p>
+            <br><br>
+
+
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">任务散点分析(与任务赏金数）</a></legend>
+            </fieldset>
+            <div id="main3" style="width: 600px;height:400px;"></div>
+            <p>该图表与上图功能类似，反映任务的受欢迎程度与任务赏金数的关系</p>
+            <br><br>
+            
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">用户散点分析(与任务标签）</a></legend>
+            </fieldset>
+            <div id="main4" style="width: 600px;height:400px;"></div>
+            <p>该图表旨在挖掘用户的活跃状态与其喜爱的标签之间的关系。</p>
+            <br><br>
+
+        </div>
+
+
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../plugins/layui/layui.js"></script>
+
+        <script type="text/javascript">
+            var myChart2 = echarts.init(document.getElementById('main2'));
+            myChart2.showLoading();
+            $.post("/scatter2", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '任务散点分析'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    xAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '{value}张'
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        }
+                    ],
+                    dataZoom: [{type: 'slider', start: 0, end: 90}, {type: 'inside', start: 0, end: 90}],
+                    series: {
+                        type: 'scatter',
+                        itemStyle: {
+                            opacity: 0.8
+                        },
+
+                        data: data
+                    }
+                };
+                myChart2.hideLoading();
+                myChart2.setOption(option);
+            });
+        </script>
+
+        <script type="text/javascript">
+            var myChart3 = echarts.init(document.getElementById('main3'));
+            myChart3.showLoading();
+            $.post("/scatter3", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '任务散点分析'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    xAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '￥{value}'
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '{value} '
+                            }
+                        }
+                    ],
+                    dataZoom: [{type: 'slider', start: 0, end: 90}, {type: 'inside', start: 0, end: 90}],
+                    series: {
+                        type: 'scatter',
+                        itemStyle: {
+                            opacity: 0.8
+                        },
+
+                        data: data
+                    }
+                };
+                myChart3.hideLoading();
+                myChart3.setOption(option);
+            });
+        </script>
+
+        <script>
+            var myChart4 = echarts.init(document.getElementById('main4'));
+            myChart4.showLoading();
+            $.post("/scatter4", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '任务散点分析'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    xAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '标签类{value}'
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '活跃{value} '
+                            }
+                        }
+                    ],
+                    dataZoom: [{type: 'slider', start: 0, end: 90}, {type: 'inside', start: 0, end: 90}],
+                    series: {
+                        type: 'scatter',
+                        itemStyle: {
+                            opacity: 0.8
+                        },
+
+                        data: data
+                    }
+                };
+                myChart4.hideLoading();
+                myChart4.setOption(option);
+            });
+        </script>
+
+        <script>
+            var myChart1 = echarts.init(document.getElementById('main1'));
+            myChart1.showLoading();
+            $.post("/scatter1", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '任务散点分析'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    xAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '标签类{value}'
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            axisLabel: {
+                                formatter: '{value} '
+                            }
+                        }
+                    ],
+                    dataZoom: [{type: 'slider', start: 0, end: 90}, {type: 'inside', start: 0, end: 90}],
+                    series: {
+                        type: 'scatter',
+                        itemStyle: {
+                            opacity: 0.8
+                        },
+
+                        data: data
+                    }
+                };
+                myChart1.hideLoading();
+                myChart1.setOption(option);
+            });
+        </script>
+
+    </body>
+
+</html>

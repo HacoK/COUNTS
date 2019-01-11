@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+        <style>
+            .info-box {
+                height: 125px;
+                width: 300px;
+                background-color: white;
+                background-color: #ffffff;
+            }
+
+            .info-box .info-box-icon {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 3px;
+                display: block;
+                float: left;
+                height: 125px;
+                width: 125px;
+                text-align: center;
+                font-size: 60px;
+                line-height: 125px;
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            .info-box .info-box-content {
+                padding: 10px 15px;
+                margin-left: 125px;
+            }
+
+            .info-box .info-box-content .info-box-text {
+                display: block;
+                font-size: 26px;
+                font-weight: bold;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: uppercase;
+            }
+
+            .info-box .info-box-content .info-box-number {
+                display: block;
+                font-weight: normal;
+                font-size: 16px;
+            }
+
+
+            .main {
+                margin-top: 25px;
+            }
+
+
+            .layui-row {
+                line-height:70px;
+                font-size:18px;
+                text-align:center;
+
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+        <div class="layui-fluid main">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                    <div class="info-box layui-anim layui-anim-up">
+                        <span class="info-box-icon" style="background-color:#FD482C !important;color:white;"><i class="fa fa-shopping-bag" aria-hidden="true"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">积分商城</span>
+                            <span class="info-box-number">Shop center</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        </div>
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">总览</a></legend>
+        </fieldset>
+
+
+        <div class="layui-container">
+            <div class="layui-row" style=" ">
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                    <div class="grid-demo layui-bg-cyan">
+                        <p id="credit" style="font-size: 60px; color:orange"></p>积分</div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <br><br>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">商品列表</a></legend>
+        </fieldset>
+
+        <div class="layui-row" style=" ">
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a1.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a2.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a3.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a4.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a5.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a6.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a7.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a8.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a9.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a10.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                <img src="../image/a11.jpg">
+                <a class="layui-btn layui-btn-warm">兑换</a>
+            </div>
+        </div>
+
+
+
+
+
+        <script src="../plugins/layui/layui.js"></script>
+        <script>
+            layui.use('jquery', function () {
+                var $ = layui.jquery;
+                var mes = {};
+                mes.userName = window.localStorage.userName;
+                $.post("/credit", mes, function (data) {
+                    $('#credit').html(data);
+                })
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Discovery</title>
+    <link rel="stylesheet" href="./plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./build/css/app.css" media="all">
+</head>
+
+<body>
+    <div class="layui-layout layui-layout-admin kit-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo"><strong><i class="layui-icon">&#xe857;</i>Discovery</strong></div>
+            <div class="layui-logo kit-logo-mobile"><strong>D</strong></div>
+            
+            <ul class="layui-nav layui-layout-right kit-nav">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="nickName">VAN</a>
+                </li>
+                
+                
+                <li class="layui-nav-item">
+                    <a href="javascript:;" >
+                        <img src="http://m.zhengjinfan.cn/images/0.jpg" onclick="dailyMark()" class="layui-nav-img" id="loginID"> 
+                    </a>
+                    <p style="display:none;" id="userName">123455</p>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:dailyMark();" onclick="dailyMark()">每日签到</a></dd>
+                        <dd><a href="javascript:;">基本资料</a></dd>
+                        <dd><a href="javascript:;">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a onclick ="exit()"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black kit-side">
+            <div class="layui-side-scroll">
+                <div class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="true"></i></div>
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar>
+                    
+                    
+                    
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span> 我的</span></a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" kit-target data-options="{url:'pages/myTask.html',icon:'&#xe705;',title:'任务数量及详情',id:'11'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe705;</i><span> 任务数量及详情</span></a></dd>
+                            <dd><a href="javascript:;" data-url="pages/personal.html" data-icon="&#xe612" data-title="个人中心" kit-target data-id='12'>
+                                    <i class="layui-icon" style="font-size:20px;">&#xe612;</i><span> 个人中心</span></a></dd>
+                            <dd><a href="javascript:;" data-url="pages/running.html" data-icon="&#xe623;" data-title="正在进行的任务" kit-target data-id='13'>
+                                    <i class="layui-icon" style="font-size:20px;">&#xe623;</i><span> 正在进行的任务</span></a></dd>
+                            <dd><a href="javascript:;" data-url="pages/finished.html" data-icon="&#xe616;" data-title="已经完成的任务" kit-target data-id='14'>
+                                    <i class="layui-icon" style="font-size:20px;">&#xe616;</i><span> 已经完成的任务</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'https://www.baidu.com',icon:'&#xe658;',title:'百度一下',id:'16'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe658;</i><span> 百度一下</span></a></dd>
+                        </dl>
+                    </li>
+                    
+                    
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span>广场</span></a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" kit-target data-options="{url:'main.html',icon:'&#xe660;',title:'首页',id:'21'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe660;</i><span> 首页</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'pages/newTask.html',icon:'&#xe60d;',title:'发现',id:'22'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe60d;</i><span> 发现</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'pages/shop.html',icon:'&#xe630;',title:'积分商城',id:'23'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe630;</i><span> 积分商城</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'pages/release.html',icon:'&#xe609;',title:'我要发布',id:'24'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe609;</i><span> 我要发布</span></a></dd>
+                        </dl>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    <li class="layui-nav-item ">
+                        <a href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span>服务</span></a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" kit-target data-options="{url:'pages/cashIn.html',icon:'&#xe660;',title:'充值中心',id:'43'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe660;</i><span> 充值中心</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'pages/cashOut.html',icon:'&#xe607;',title:'提现中心',id:'41'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe607;</i><span> 提现中心</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'',icon:'&#xe606;',title:'联系我们',id:'42'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe606;</i><span> 联系我们</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'',icon:'&#xe661;',title:'问题咨询',id:'44'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe661;</i><span> 问题咨询</span></a></dd>
+                        </dl>
+                    </li>
+
+                    
+                    <li class="layui-nav-item ">
+                        <a href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span>资讯</span></a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;" kit-target data-options="{url:'navbar.html',icon:'&#xe659;',title:'悬赏',id:'31'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe659;</i><span> 悬赏</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'tab.html',icon:'&#xe659;',title:'...',id:'32'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe659;</i><span> ...</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'onelevel.html',icon:'&#xe660;',title:'...',id:'33'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe660;</i><span> ...</span></a></dd>
+                            <dd><a href="javascript:;" kit-target data-options="{url:'',icon:'&#xe661;',title:'...',id:'34'}">
+                                    <i class="layui-icon" style="font-size:20px;">&#xe661;</i><span> ...</span></a></dd>
+                        </dl>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="layui-body" id="container">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">主体内容加载中,请稍等...</div>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            2018 Discovery  众包标注平台 <i class="layui-icon">&#xe658;</i>
+            <a href="./index.html"> All Rights Reserved .</a> 
+
+        </div>
+    </div>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="./plugins/layui/layui.js"></script>
+    <script>
+        var message;
+        layui.config({
+            base: 'build/js/'
+        }).use(['app', 'message'], function() {
+            var app = layui.app,
+                $ = layui.jquery,
+                layer = layui.layer;
+            //将message设置为全局以便子页面调用
+            message = layui.message;
+            //主入口
+            app.set({
+                type: 'iframe'
+            }).init();
+            $('#pay').on('click', function() {
+                layer.open({
+                    title: false,
+                    type: 1,
+                    content: '<img src="/build/images/pay.png" />',
+                    area: ['500px', '250px'],
+                    shadeClose: true
+                });
+            });
+
+        });
+        
+        
+    </script>
+    
+    <script>
+        $(document).ready(function (){
+            window.console.log(window.localStorage.userName);
+            $("#nickName").text(window.localStorage.userName);
+        });
+    </script>
+    
+    
+    <script>
+       function exit()
+                                           {
+                                            window.location.href = "/login";//这里写你想跳转的url，或者也可以给test加一个参数，从a标签的点击方法里写上想要跳转的url
+                                          }
+                                     </script>
+    
+</body>
+
+</html>

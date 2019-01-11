@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <script src="../plugins/echarts.min.js"></script>
+    </head>
+
+    <body style="font-size: 20px">
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>百分统计量与排名</h1>
+        </blockquote>
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">数据</a></legend>
+        </fieldset>
+
+        <div class="layui-container">
+            <div class="layui-row" >
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                    <div class="grid-demo layui-bg-cyan">
+                        总用户数：<p id="users" ><strong>Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                    <div class="grid-demo layui-bg-red">
+                        活跃用户数：<p id="goodUsers" ><strong>Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
+                    <div class="grid-demo layui-bg-blue">
+                        总任务数：<p id="tasks" ><strong>Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm7 layui-col-md8">
+                    <div class="grid-demo layui-bg-green">
+                        已完成任务数：<p id="finishedTasks" ><strong>Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm5 layui-col-md4">
+                    <div class="grid-demo layui-bg-black">
+                        进行中任务数：<p id="runningTasks" ><strong>Loading...</strong></p></div>
+                </div>
+            </div>
+
+
+        </div>
+        <br><br>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">概览</a></legend>
+        </fieldset>
+
+        <div class="layui-container" id="mainDiv">
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">用户分类统计</a></legend>
+            </fieldset>
+            <div id="main1" style="width: 600px;height:400px;"></div>
+            <p>该统计图表反映了建站以来的注册用户数，并会随时间不断更新，
+                同时我们以一定的指标（工作天数与连续工作天数）
+                来判断出站点中的活跃精英用户数和僵尸号数，
+                旨在为站点的发展提供参考。</p>
+            <br><br>
+
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">活跃状态统计</a></legend>
+            </fieldset>
+            <div id="main2" style="width: 600px;height:400px;"></div>
+            <p>该统计图表反映了建站以来的活跃用户中，高投入用户与一般游客用户的比例，
+                并会随时间不断更新，旨在调整站点活跃精英的优待制度，同时指导奖惩机制激发工人的积极性。</p>
+            <br><br>
+
+
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">发布者活跃统计</a></legend>
+            </fieldset>
+            <div id="main3" style="width: 600px;height:400px;"></div>
+            <p>该图标与上图功能类似，判断主体更改为项目发布者</p>
+            <br><br>
+
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="color-design">标签热度统计</a></legend>
+            </fieldset>
+            <div id="main4" style="width: 600px;height:400px;"></div>
+            <p>该直方图展示了站点中最受欢迎的一批任务的标签属性。</p>
+            <br><br>
+        </div>
+
+
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../plugins/layui/layui.js"></script>
+
+        <script type="text/javascript">
+            $.post("/Stat", {"data": "1"}, function (data) {
+                $("#users").html(data.users);
+                $("#goodUsers").html(data.goodUsers);
+                $("#tasks").html(data.tasks);
+                $("#finishedTasks").html(data.finishedTasks);
+                $("#runningTasks").html(data.runningTasks);
+            });
+        </script>
+
+        <script type="text/javascript">
+            var myChart1 = echarts.init(document.getElementById('main1'));
+            myChart1.showLoading();
+            $.post("/pieChart1", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '用户分类统计'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    roseType: 'angle',
+                    series: {
+                        type: 'pie',
+                        data: data
+                    }
+                };
+                myChart1.hideLoading();
+                myChart1.setOption(option);
+            });
+        </script>
+
+        <script type="text/javascript">
+            var myChart2 = echarts.init(document.getElementById('main2'));
+            myChart2.showLoading();
+            $.post("/pieChart2", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '活跃状态统计'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    roseType: 'angle',
+                    series: {
+                        type: 'pie',
+                        data: data
+                    }
+                };
+                myChart2.hideLoading();
+                myChart2.setOption(option);
+            });
+        </script>
+
+        <script>
+            var myChart3 = echarts.init(document.getElementById('main3'));
+            myChart3.showLoading();
+            $.post("/pieChart3", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '发布者活跃统计'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    roseType: 'angle',
+                    series: {
+                        type: 'pie',
+                        data: data
+                    }
+                };
+                myChart3.hideLoading();
+                myChart3.setOption(option);
+            });
+        </script>
+
+        <script>
+            var myChart4 = echarts.init(document.getElementById('main4'));
+            myChart4.showLoading();
+            $.post("/barChart", {"data": "1"}, function (data) {
+                var option = {
+                    title: {
+                        text: '任务标签排名'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问量']
+                    },
+                    xAxis: {
+                        data: data.name
+                    },
+                    yAxis: {},
+                    dataZoom: [{type: 'slider', start: 0, end: 50}],
+                    series: {
+                        type: 'bar',
+                        data: data.num
+                    }
+                };
+                myChart4.hideLoading();
+                myChart4.setOption(option);
+            });
+
+        </script>
+
+    </body>
+
+</html>

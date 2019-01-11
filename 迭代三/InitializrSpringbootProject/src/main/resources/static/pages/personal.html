@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+        <style>
+            .info-box {
+                height: 125px;
+                width: 300px;
+                background-color: white;
+                background-color: #ffffff;
+            }
+
+            .info-box .info-box-icon {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 3px;
+                display: block;
+                float: left;
+                height: 125px;
+                width: 125px;
+                text-align: center;
+                font-size: 60px;
+                line-height: 125px;
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            .info-box .info-box-content {
+                padding: 10px 15px;
+                margin-left: 125px;
+            }
+
+            .info-box .info-box-content .info-box-text {
+                display: block;
+                font-size: 26px;
+                font-weight: bold;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: uppercase;
+            }
+
+            .info-box .info-box-content .info-box-number {
+                display: block;
+                font-weight: normal;
+                font-size: 16px;
+            }
+
+
+            .main {
+                margin-top: 25px;
+            }
+
+
+            .layui-row {
+                line-height:70px;
+                font-size:18px;
+                text-align:center;
+
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+        <div class="layui-fluid main">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                    <div class="info-box layui-anim layui-anim-up">
+                        <span class="info-box-icon" style="background-color:#00a65a !important;color:white;" ><i class="fa fa-users" aria-hidden="true"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">个人中心</span>
+                            <span class="info-box-number">Personal center</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md4">
+                    <a  class="layui-btn layui-btn-lg" onclick="dailyMark()">
+                        签到
+                    </a>
+                </div>
+                <div class="layui-col-md5">
+                    <a style="font-size: 60px; color:orange" id="reputationRank">
+                        200
+                    </a>全站排名
+                    <a style="font-size: 60px; color:orange" id="reputationNum">
+                        86
+                    </a>信誉值
+
+                </div>
+
+            </div>
+            <br><br>
+        </div>
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">总览</a></legend>
+        </fieldset>
+
+
+        <div class="layui-container">
+            <div class="layui-row" >
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                    <div class="grid-demo layui-bg-cyan">
+                        <p id="nickname" ><strong>个人昵称:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                    <div class="grid-demo layui-bg-red">
+                        <p id="identity" ><strong>身份:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
+                    <div class="grid-demo layui-bg-blue">
+                        <p id="numberOfTask" ><strong>完成的项目数:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm7 layui-col-md8">
+                    <div class="grid-demo layui-bg-green">
+                        <p id="favourite" ><strong>最喜爱的标签:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm5 layui-col-md4">
+                    <div class="grid-demo layui-bg-black">
+                        <p id="dates" ><strong>来这里的天数:Loading...</strong></p></div>
+                </div>
+            </div>
+
+
+        </div>
+        <br><br>
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">经济</a></legend>
+        </fieldset>
+
+
+        <div class="layui-container">
+            <div class="layui-row" >
+                <div class="layui-col-xs6 layui-col-sm4 layui-col-md4">
+                    <div class="grid-demo layui-bg-cyan">
+                        <p id="level1" ><strong>工作等级:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4 layui-col-md4">
+                    <div class="grid-demo layui-bg-red">
+                        <p id="exp1" ><strong>工作经验:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4 layui-col-md4">
+                    <div class="grid-demo layui-bg-blue">
+                        <p id="honor1" ><strong>工作称号:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4 layui-col-md4">
+                    <div class="grid-demo layui-bg-green">
+                        <p id="level2" ><strong>发布等级:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4 layui-col-md4">
+                    <div class="grid-demo layui-bg-orange">
+                        <p id="exp2" ><strong>发布经验:Loading...</strong></p></div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4 layui-col-md4">
+                    <div class="grid-demo layui-bg-black">
+                        <p id="honor2" ><strong>发布称号:Loading...</strong></p></div>
+                </div>
+            </div>
+
+            <div class="layui-row">
+                <div class="layui-col-xs layui-col-sm layui-col-md">
+                    <div class="grid-demo layui-bg-blue">
+                        <p id="credits" ><strong>赏金数额:Loading...</strong></p></div>
+                </div>
+
+            </div>
+        </div><br><br>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">动态</a></legend>
+        </fieldset>
+
+
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs layui-col-sm layui-col-md">
+                    <div class="grid-demo ">
+                        <p id="recent" ><strong>近期的参与:Loading...</strong></p></div>
+                </div>
+
+            </div>
+        </div><br><br>
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">作为标注的参与者......</a></legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-xs layui-col-sm layui-col-md">
+                <div class="grid-demo ">
+                    <p id="WORKER1" ><strong></strong></p></div>
+            </div></div>
+        <div class="layui-row">
+            <div class="layui-col-xs layui-col-sm layui-col-md">
+                <div class="grid-demo ">
+                    <p id="WORKER2" ><strong></strong></p></div>
+            </div></div>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">作为项目的发布者......</a></legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-xs layui-col-sm layui-col-md">
+                <div class="grid-demo ">
+                    <p id="RELEASER" ><strong></strong></p></div>
+            </div></div>
+        <script src="../plugins/layui/layui.js"></script>
+
+        <script>
+            layui.use('jquery', function () {
+                var $ = layui.jquery;
+                var message = {userName: window.localStorage.userName};
+                $(document).ready(function () {
+                    $.post("/personalInfo", message, function (data) {
+                        $("#reputationRank").html(data.rank);
+                        $("#reputationNum").html(data.reputationNum);
+                        $("#nickname").html("个人昵称:" + data.nickname);
+                        $("#identity").html("用户ID:" + data.id);
+                        $("#numberOfTask").html("参与的项目数:" + data.numberOfTask);
+                        $("#favourite").html("最喜爱的标签:" + data.favourite);
+                        $("#dates").html("来这里的天数:" + data.days + "天了！");
+                        $("#credits").html("赏金数额:" + data.cash);
+                        $("#recent").html("近期的参与:" + data.recent);
+                        $("#level1").html("工作等级:" + data.lvl1);
+                        $("#exp1").html("工作经验:" + data.exp1);
+                        $("#honor1").html("工作称号:" + data.honor1);
+                        $("#level2").html("发布等级:" + data.lvl2);
+                        $("#exp2").html("发布经验:" + data.exp2);
+                        $("#honor2").html("发布称号:" + data.honor2);
+                        $("#WORKER1").html("已经完成了:" + data.workerNum[0] + "个任务！其中包括" + data.workerNum[1] + "个初级任务，" + data.workerNum[2] + "个中级任务和" + data.workerNum[3] + "个高级任务！");
+                        $("#WORKER2").html("今天还可以再接" + data.workerNum[4] + "个任务。把握机会噢！");
+                        $("#RELEASER").html("已经发布了:" + data.releaserNum + "个任务！");
+                    });
+                });
+
+            });
+        </script>
+
+        <script>
+            function dailyMark() {
+                var $ = layui.jquery;
+                var message = {};
+                message.userName = window.localStorage.userName;
+                $.post("/dailyMark", message, function (data) {
+                    layui.use('layer', function () {
+                        if (data == '1') {
+                            layer.alert("签到成功！");
+                        } else if (data == '0') {
+                            layer.alert("今天已经签到过啦！");
+                        } else {
+                            layer.alert("出错了。。。。。");
+                        }
+                    });
+                });
+            }
+        </script>
+    </body>
+
+</html>

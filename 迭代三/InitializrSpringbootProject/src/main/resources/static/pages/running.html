@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script>
+            window.Pages = 1;
+            var message = {};
+            message.userName = window.localStorage.userName;
+            $.post("/userTaskPage", message, function (data) {
+                Pages = data;
+            });
+
+        </script>
+
+        <style>
+
+            .layui-row {
+                height:180px;
+                font-size:18px;
+                text-align:center;  
+                background: #f1f3de;
+            }
+            .layui-row#idd {
+                left:80px;
+                height:70px;
+                line-height:70px;
+                background: #ffffff;
+            }
+
+
+        </style>
+    </head>
+
+    <body>
+        <br>
+
+        <blockquote class="layui-elem-quote layui-anim layui-anim-scale">
+            <h1>正在进行的任务</h1>
+        </blockquote>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="color-design">概览</a></legend>
+        </fieldset>
+
+        <div class="layui-container" id="mainDiv">
+
+        </div> 
+
+
+        <script src="../plugins/layui/layui.js"></script>
+        
+        <script>
+            $.post("/userTaskNum", message, function (data){
+                $('#taska').html("参与中 : "+data.proc+ "  个项目");
+                $('#taskb').html("发布的 : "+data.release+ "  个项目");
+            });
+        </script>
+        
+        
+        <script>
+            layui.use('flow', function () {
+                var flow = layui.flow;
+                flow.load({
+                    elem: '#mainDiv' //流加载容器
+                    , done: function (page, next) { //执行下一页的回调
+                        var JSPDATA;
+                        message.page = page;
+                        $.post("/userTask", message, function (data) {
+                            if (Pages !== 0) {
+                                JSPDATA = data;
+                                var len = JSPDATA.length;
+                                var lis = [];
+                                for (var i = 0; i < len; i++) {
+                                    lis.push('<div class="layui-row">\n\
+                                <div class="layui-col-xs5 layui-col-sm4 layui-col-md3">\n\
+                                    <br>\n\
+                                    <img src=' + JSPDATA[i].preloadPicURL + ' height="140" width="140">\n\
+                                </div>\n\
+                                <div class="layui-col-xs4 layui-col-sm4 layui-col-md6">\n\
+                                    <br>\n\
+                                    <p>赏金:' + JSPDATA[i].cash + '</p><br>\n\
+                                    <p>日期:' + JSPDATA[i].deadline + '</p><br>\n\
+                                    <p>项目名称:' + JSPDATA[i].name + '</p><br>\n\
+                                </div><div class="layui-col-xs3 layui-col-sm4 layui-col-md3"><br><br>\n\
+                                    <a class="layui-btn" href="javascript:void(0);" onclick="task_detail(\'' + JSPDATA[i].id + '\')"><i class="layui-icon">&#xe602;</i></a><br><br>\n\
+                                    <a class="layui-btn"><i class="layui-icon">&#xe641;</i></a><br><br></div></div><br><br>');
+                                }
+                            }
+                            next(lis.join(''), page < Pages);
+                            page++;
+                        });
+                    }
+                });
+            })
+        </script>
+
+        <script>
+            function task_detail(info) {
+                window.localStorage.taskToOpen = info;
+                window.location.href = './Details.html';
+            }
+        </script> 
+    </body>
+
+</html>
